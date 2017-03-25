@@ -13,3 +13,11 @@ cycles through all colors
 ## ambilight.py
 
 lets your hue lights mimic the color on your display
+
+## hueremote.py
+
+listens to an USB remote (or keyboard) and maps the buttons to light scenes
+
+## alarmserver
+
+works with (AlarmDroid)[https://github.com/Jereviendrai/alarmdroid] to turn on your lights when your phone alarm rings.
