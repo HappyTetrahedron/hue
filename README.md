@@ -23,4 +23,4 @@ listens to an USB remote (or keyboard) and maps the buttons to light scenes
 
 ## alarmserver
 
-works with (AlarmDroid)[https://github.com/Jereviendrai/alarmdroid] to turn on your lights when your phone alarm rings.
+works with [AlarmDroid](https://github.com/Jereviendrai/alarmdroid) to turn on your lights when your phone alarm rings.
