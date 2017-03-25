@@ -2,54 +2,41 @@
 
 import requests
 import json
+import yaml
+
+with open("hueconfig.yml", "r") as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+def get_scene_info(scenename):
+    for scene in cfg['scenes']:
+        if scene['scene'] == scenename:
+            return scene
+    return []
 
 def put_request(uri, keys):
     jdata = json.dumps(keys)
-    r = requests.put("http://192.168.0.116/api/APIKEY/" + uri, jdata)
+    r = requests.put("http://" + cfg['bridge_ip'] + "/api/" + cfg['api_key'] + "/" + uri, jdata)
 
 def get_request(uri):
-    r = requests.get("http://192.168.0.116/api/APIKEY/" + uri)
+    r = requests.get("http://" + cfg['bridge_ip'] + "/api/" + cfg['api_key'] + "/" + uri)
     return json.loads(r.text)
 
 def activate_scene(group, scene_key):
     keys = {"scene":scene_key}
-    put_request("groups/"+group+"/action", keys)
+    put_request("groups/%s/action" % str(group), keys)
 
-def scene_random():
-    activate_scene("1", "t-LfC4fk3s0IFbs")
-
-def scene_focus():
-    activate_scene("1", "hHq3iUPt1ADbmmM")
-
-def scene_off():
-    activate_scene("1", "xTLEreD08lNouvq")
-
-def scene_night():
-    activate_scene("1", "yvJum2ytSQt0eCM")
-
-def scene_relax():
-    activate_scene("1", "XLqfX-Z1g7cRqQb")
-
-def scene_last():
-    activate_scene("1", "KA3s3JfLTWqaq3F")
-
-def scene_energize():
-    activate_scene("1", "1SlwrM6xEfz-QnJ")
-
-def scene_energize_fade():
-    activate_scene("1", "aEiAPeVjkQ8wU5S")
-
-def scene_sofa_dimmed():
-    activate_scene("1", "3-Mwry4K2CXdjrI")
+def scene(scenename):
+    sceneinfo = get_scene_info(scenename)
+    activate_scene(sceneinfo['group'], sceneinfo['key'])
 
 def set_brightness(group, bri):
     keys = {"bri":bri}
-    put_request("groups/"+group+"/action", keys)
+    put_request("groups/"+str(group)+"/action", keys)
 
 def get_brightness(group):
-    r = get_request("groups/"+group)
+    r = get_request("groups/"+str(group))
     return r["action"]["bri"]
 
 def set_to_color_hsb(light, color):
 	keys = {"hue": + color[0], "sat": + color[1], "bri": color[2]}
-	put_request("lights/"+light+"/state", keys)
+	put_request("lights/"+str(light)+"/state", keys)

@@ -1,0 +1,31 @@
+bridge_ip: BRIDGE_IP
+api_key: API_KEY
+
+scenes:
+  - scene: focus
+    group: 1
+    key: hHq3iUPt1ADbmmM
+  - scene: 'off'
+    group: 1
+    key: xTLEreD08lNouvq
+  - scene: random
+    group: 1
+    key: t-LfC4fk3s0IFbs
+  - scene: night
+    group: 1
+    key: yvJum2ytSQt0eCM
+  - scene: relax
+    group: 1
+    key: XLqfX-Z1g7cRqQb
+  - scene: energize
+    group: 1
+    key: 1SlwrM6xEfz-QnJ
+  - scene: energize_fade
+    group: 1
+    key: aEiAPeVjkQ8wU5S
+  - scene: last
+    group: 1
+    key: KA3s3JfLTWqaq3F
+  - scene: sofa_dimmed
+    group: 1
+    key: 3-Mwry4K2CXdjrI
