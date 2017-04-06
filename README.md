@@ -6,7 +6,7 @@ interface between the other scripts and the Philips Hue API (`hue.py`).
 
 The file hueconfig.yml is used to configure hue.py. you need to specify the ip
 address of your Hue bridge, your Hue API key, and the information for your
-light scenes.
+light scenes. The file hueconfig.yml must be in the folder `$XDG_CONFIG_DIR/hue/hueconfig.yml`.
 
 ## colors.py
 

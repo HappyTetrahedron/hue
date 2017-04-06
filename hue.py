@@ -3,8 +3,11 @@
 import requests
 import json
 import yaml
+from xdg.BaseDirectory import *
 
-with open("hueconfig.yml", "r") as ymlfile:
+configdir = xdg_config_dirs[0]
+
+with open(configdir + "/hue/hueconfig.yml", "r") as ymlfile:
     cfg = yaml.load(ymlfile)
 
 def get_scene_info(scenename):
