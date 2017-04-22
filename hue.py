@@ -7,8 +7,12 @@ from xdg.BaseDirectory import *
 
 configdir = xdg_config_dirs[0]
 
-with open(configdir + "/hue/hueconfig.yml", "r") as ymlfile:
-    cfg = yaml.load(ymlfile)
+try:
+    with open(configdir + "/hue/hueconfig.yml", "r") as ymlfile:
+        cfg = yaml.load(ymlfile)
+        ymlfile.close()
+except FileNotFoundError:
+    print("Configuration file not found! Please create your configuration. Hue will not work!")
 
 def get_scene_info(scenename):
     for scene in cfg['scenes']:
