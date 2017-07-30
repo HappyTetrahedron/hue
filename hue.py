@@ -28,6 +28,11 @@ def get_request(uri):
     r = requests.get("http://" + cfg['bridge_ip'] + "/api/" + cfg['api_key'] + "/" + uri)
     return json.loads(r.text)
 
+def get_lights():
+    r = get_request("lights")
+    lights = r.keys()
+    return lights
+
 def activate_scene(group, scene_key):
     keys = {"scene":scene_key}
     put_request("groups/%s/action" % str(group), keys)
@@ -40,6 +45,14 @@ def set_brightness(group, bri):
     keys = {"bri":bri}
     put_request("groups/"+str(group)+"/action", keys)
 
+def set_light_brightness(light, bri):
+    keys = {"bri":bri}
+    put_request("lights/"+str(light)+"/state", keys)
+
+def get_light_brightness(light):
+    r = get_request("lights/"+str(light))
+    return r["state"]["bri"]
+
 def get_brightness(group):
     r = get_request("groups/"+str(group))
     return r["action"]["bri"]
@@ -47,3 +60,11 @@ def get_brightness(group):
 def set_to_color_hsb(light, color):
 	keys = {"hue": + color[0], "sat": + color[1], "bri": color[2]}
 	put_request("lights/"+str(light)+"/state", keys)
+
+def turn_on(light):
+    keys = {"on": True}
+    put_request("lights/"+str(light)+"/state", keys)
+
+def turn_off(light):
+    keys = {"on": False}
+    put_request("lights/"+str(light)+"/state", keys)
