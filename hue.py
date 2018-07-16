@@ -80,10 +80,7 @@ def set_to_color_temp(light, color):
 	put_request("lights/"+str(light)+"/state", keys)
 
 def set_group_to_color_temp(group, color):
-	print("setting to %d" % color)
 	keys = {"ct": color}
-	import pprint
-	pprint.pprint(keys)
 	put_request("groups/"+str(group)+"/action", keys)
 
 def turn_on(light):
