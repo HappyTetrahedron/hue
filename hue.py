@@ -28,10 +28,20 @@ def get_request(uri):
     r = requests.get("http://" + cfg['bridge_ip'] + "/api/" + cfg['api_key'] + "/" + uri)
     return json.loads(r.text)
 
-def get_lights():
-    r = get_request("lights")
-    lights = r.keys()
+def get_lights(group=None):
+    if group == None:
+        r = get_request("lights")
+        lights = r.keys()
+    else:
+        r = get_request("groups/%s" % group)
+        lights = r['lights']
     return lights
+
+def get_groups():
+    r = get_request("groups")
+    groups = list(r.keys())
+    groups.insert(0, "0")
+    return groups
 
 def activate_scene(group, scene_key):
     keys = {"scene":scene_key}
@@ -61,10 +71,34 @@ def set_to_color_hsb(light, color):
 	keys = {"hue": + color[0], "sat": + color[1], "bri": color[2]}
 	put_request("lights/"+str(light)+"/state", keys)
 
+def set_group_to_color_hsb(group, color):
+	keys = {"hue": + color[0], "sat": + color[1], "bri": color[2]}
+	put_request("groups/"+str(group)+"/action", keys)
+
+def set_to_color_temp(light, color):
+	keys = {"ct": color}
+	put_request("lights/"+str(light)+"/state", keys)
+
+def set_group_to_color_temp(group, color):
+	print("setting to %d" % color)
+	keys = {"ct": color}
+	import pprint
+	pprint.pprint(keys)
+	put_request("groups/"+str(group)+"/action", keys)
+
 def turn_on(light):
     keys = {"on": True}
     put_request("lights/"+str(light)+"/state", keys)
 
+def turn_on_group(group):
+    keys = {"on": True}
+    put_request("groups/"+str(group)+"/action", keys)
+
 def turn_off(light):
     keys = {"on": False}
     put_request("lights/"+str(light)+"/state", keys)
+
+def turn_off_group(group):
+    keys = {"on": False}
+    put_request("groups/"+str(group)+"/action", keys)
+
