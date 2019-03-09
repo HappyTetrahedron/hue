@@ -4,7 +4,7 @@ import yaml
 import json
 import requests
 import time
-import hue2
+import hue
 from xdg.BaseDirectory import *
 
 
@@ -60,7 +60,7 @@ cfg['api_key'] = response[0]['success']['username']
 
 print("API key received")
 
-hue = hue2.Hue(cfg)
+hue = hue.Hue(cfg)
 
 print("Scene info collected")
 
