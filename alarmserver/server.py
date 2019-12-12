@@ -10,6 +10,7 @@ import yaml
 
 
 app = Flask(__name__)
+config = None
 
 
 @app.route("/time", methods=['POST'])
@@ -18,9 +19,9 @@ def handle_request():
     print(data)
     if 'next_alarm' in data:
         time = datetime.datetime.fromtimestamp( data['next_alarm']/1000 - 60 * 15 ).strftime('%y%m%d%H%M')
-        call(["/home/hue/alarmserver/addat", time])
+        call([config["addat_path"], time])
     else:
-        call(["/home/hue/alarmserver/clearat"])
+        call([config["clearat_path"]])
 
 
 if __name__ == '__main__':
