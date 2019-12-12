@@ -22,6 +22,7 @@ def handle_request():
         call([config["addat_path"], time])
     else:
         call([config["clearat_path"]])
+    return ""
 
 
 if __name__ == '__main__':
