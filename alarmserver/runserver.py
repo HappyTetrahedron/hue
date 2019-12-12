@@ -1,21 +1,37 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
-import argparse
-from server import start_server
+from optparse import OptionParser
+from flask import Flask
+from flask import request
+from subprocess import call
+
+import datetime
+import yaml
+
+
+app = Flask(__name__)
+
+
+@app.route("/time", methods=['POST'])
+def handle_request():
+    data = request.get_json()
+    print(data)
+    if 'next_alarm' in data:
+        time = datetime.datetime.fromtimestamp( data['next_alarm']/1000 - 60 * 15 ).strftime('%y%m%d%H%M')
+        call(["/home/hue/alarmserver/addat", time])
+    else:
+        call(["/home/hue/alarmserver/clearat"])
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument(
-            '--port', type=int, #action='store_const', dest='port',
-            help='portnumber(default: 6789)')
+    parser = OptionParser()
+    parser.add_option('-c', '--config', dest='config', default='config.yml', type='string',
+                      help="Path of configuration file")
+    (opts, args) = parser.parse_args()
+    with open(opts.config, 'r') as configfile:
+        config = yaml.load(configfile)
 
-    args = parser.parse_args()
-
-    if not args.port:
-        port = 7887
+    if 'ssl' in config:
+        app.run(config['host'], config['port'], ssl_context=(config['ssl']['cert_path'], config['ssl']['key_path']))
     else:
-        port = args.port
-
-    start_server(port)
-
+        app.run(config['host'], config['port'])
