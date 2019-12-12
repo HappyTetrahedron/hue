@@ -1,25 +1,37 @@
-import asyncio
-import socket
-import fcntl
-import struct
-from server_protocol import AlarmServerProtocol
+#!/usr/bin/env python
 
-def start_server(port):
-    # Fancy python 3.5 stuff for async stuff
-    loop = asyncio.get_event_loop()
-    print("Starting UDP server on port: %d" % port)
-    # One protocol instance will be created to serve all client requests
-    listen = loop.create_datagram_endpoint(
-        AlarmServerProtocol,
-        local_addr=('0.0.0.0', port))
-    transport, protocol = loop.run_until_complete(listen)
+from optparse import OptionParser
+from flask import Flask
+from flask import request
+from subprocess import call
 
-    try:
-        loop.run_forever()
-    except KeyboardInterrupt:
-        pass
-
-    transport.close()
-    loop.close()
+import datetime
+import yaml
 
 
+app = Flask(__name__)
+
+
+@app.route("/time", methods=['POST'])
+def handle_request():
+    data = request.get_json()
+    print(data)
+    if 'next_alarm' in data:
+        time = datetime.datetime.fromtimestamp( data['next_alarm']/1000 - 60 * 15 ).strftime('%y%m%d%H%M')
+        call(["/home/hue/alarmserver/addat", time])
+    else:
+        call(["/home/hue/alarmserver/clearat"])
+
+
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option('-c', '--config', dest='config', default='config.yml', type='string',
+                      help="Path of configuration file")
+    (opts, args) = parser.parse_args()
+    with open(opts.config, 'r') as configfile:
+        config = yaml.load(configfile)
+
+    if 'ssl' in config:
+        app.run(config['host'], config['port'], ssl_context=(config['ssl']['cert_path'], config['ssl']['key_path']))
+    else:
+        app.run(config['host'], config['port'])
