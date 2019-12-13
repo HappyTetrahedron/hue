@@ -72,4 +72,4 @@ if not os.path.exists(basedir + "/hue"):
 with open(basedir + "/hue/hueconfig.yml", "w") as outfile:
     yaml.dump(cfg, outfile, default_flow_style=False)
 
-print("Configuration stored to " + xdg_config_dirs[0] + "/hue/hueconfig.yml")
+print("Configuration stored to " + basedir + "/hue/hueconfig.yml")
