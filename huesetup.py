@@ -65,6 +65,9 @@ hue = hue.Hue(cfg)
 print("Scene info collected")
 
 basedir = str(xdg.XDG_CONFIG_HOME)
+if not os.path.exists(basedir + "/hue"):
+    os.mkdir(basedir + "/hue")
+
 with open(basedir + "/hue/hueconfig.yml", "w") as outfile:
     yaml.dump(cfg, outfile, default_flow_style=False)
 
