@@ -5,7 +5,7 @@ import json
 import requests
 import time
 import hue
-from xdg.BaseDirectory import *
+import xdg
 
 
 def get_request(ip, uri):
@@ -64,7 +64,8 @@ hue = hue.Hue(cfg)
 
 print("Scene info collected")
 
-with open(xdg_config_dirs[0] + "/hue/hueconfig.yml", "w") as outfile:
+basedir = str(xdg.XDG_CONFIG_HOME)
+with open(basedir + "/hue/hueconfig.yml", "w") as outfile:
     yaml.dump(cfg, outfile, default_flow_style=False)
 
 print("Configuration stored to " + xdg_config_dirs[0] + "/hue/hueconfig.yml")
