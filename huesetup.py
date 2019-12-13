@@ -6,6 +6,7 @@ import requests
 import time
 import hue
 import xdg
+import os
 
 
 def get_request(ip, uri):
