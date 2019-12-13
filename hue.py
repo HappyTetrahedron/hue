@@ -3,9 +3,9 @@
 import requests
 import json
 import yaml
-from xdg.BaseDirectory import *
+import xdg
 
-configdir = xdg_config_dirs[0]
+configdir = xdg.XDG_CONFIG_HOME
 
 
 class Hue:
@@ -14,7 +14,7 @@ class Hue:
             self.cfg = cfg
         else:
             try:
-                with open(configdir + "/hue/hueconfig.yml", "r") as ymlfile:
+                with open(str(configdir) + "/hue/hueconfig.yml", "r") as ymlfile:
                     self.cfg = yaml.load(ymlfile)
                     ymlfile.close()
             except FileNotFoundError:

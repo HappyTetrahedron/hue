@@ -2,6 +2,6 @@
 
 import requests
 import json
-from hue import scene
+import hue
 
-scene('energize_fade')
+hue.Hue().scene('energize_fade')

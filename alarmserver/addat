@@ -8,4 +8,4 @@ do
     atrm $i
 done
 
-echo "source /home/hue/venv/bin/activate; python /home/hue/activate_focus.py" | at -t "$1"
+echo "source /home/hue/venv-hue/bin/activate; python /home/hue/deploy-hue/activate_focus.py" | at -t "$1"
